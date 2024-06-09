@@ -3,7 +3,7 @@ FROM golang:1.18
 
 WORKDIR /app
 
-COPY account_manager.go .
+COPY ./account_manager/account_manager.go .
 
 RUN go build -o account_manager .
 
