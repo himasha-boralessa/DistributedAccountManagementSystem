@@ -1,23 +1,15 @@
-# Dockerfile.client
-FROM golang:1.18 AS builder
+# Use the official Golang image as the base image for the build stage
+FROM golang:1.20
 
+# Set the Current Working Directory inside the container
 WORKDIR /app
 
-# Copy go.mod and go.sum
-COPY go.mod go.sum ./
+# Copy the source code into the container
+COPY go.mod .
+COPY client.go .
 
-# Download dependencies
-RUN go mod download
+# Build the Go app
+RUN go build -o client
 
-# Copy the source code
-COPY . .
-
-# Build the application
-RUN go build -o client client.go
-
-# Use a smaller base image for the final container
-FROM alpine:latest
-WORKDIR /root/
-COPY --from=builder /app/client .
-
-CMD ["./client"]
+# Command to run the executable
+ENTRYPOINT ["/app/client"]
